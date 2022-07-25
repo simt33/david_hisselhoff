@@ -3,11 +3,12 @@ FROM golang:1.13 AS build
 WORKDIR /build
 
 COPY . .
-RUN go build
+RUN GOOS=linux GOARCH=amd64 go build -o /build/run
+RUN chmod +x /build/run
 
-FROM golang:1.13
+FROM scratch
 
-COPY --from=build /build/starter-snake-go /usr/local/bin/
+COPY --from=build /build/run /
 
 EXPOSE 8080
-CMD ["/usr/local/bin/starter-snake-go"]
+CMD ["/run"]
