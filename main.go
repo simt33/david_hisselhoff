@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+  "fmt"
 )
 
 const ServerID = "BattlesnakeOfficial/starter-snake-go"
@@ -76,6 +77,12 @@ type Coord struct {
 	Y int `json:"y"`
 }
 
+type PossibleMove struct {
+	X int
+  Y int
+  Direction string
+}
+
 // Response Structs
 
 type BattlesnakeInfoResponse struct {
@@ -90,6 +97,7 @@ type BattlesnakeMoveResponse struct {
 	Move  string `json:"move"`
 	Shout string `json:"shout,omitempty"`
 }
+
 
 // HTTP Handlers
 
@@ -118,7 +126,8 @@ func HandleStart(w http.ResponseWriter, r *http.Request) {
 
 func HandleMove(w http.ResponseWriter, r *http.Request) {
 	state := GameState{}
-	err := json.NewDecoder(r.Body).Decode(&state)
+	fmt.Printf("**HANDLING MOVE IN TURN: %i\n", state.Turn)
+  err := json.NewDecoder(r.Body).Decode(&state)
 	if err != nil {
 		log.Printf("ERROR: Failed to decode move json, %s", err)
 		return
