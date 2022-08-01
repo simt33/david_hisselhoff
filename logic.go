@@ -111,7 +111,7 @@ func BuildOccupiedCoords (state GameState) []Coord {
     for j := 0; j< dangerNoodleLength; j++ {
       occupiedCoords = append(occupiedCoords, dangerNoodleBody[j])
     }
-
+	  
     // All moves around every other snek's head
     if dangerNoodles[i].ID != state.You.ID {
     	snekNextMoves := BuildPossibleMoves (dangerNoodles[i].Head, state)
@@ -119,6 +119,9 @@ func BuildOccupiedCoords (state GameState) []Coord {
     	for _, coord := range snekNextMoves {
       	   occupiedCoords = append(occupiedCoords, coord)
     }
+    
+    // ... And their actual head
+    occupiedCoords = append(occupiedCoords, dangerNoodles[i].Head)
   } 
   }
   return occupiedCoords
