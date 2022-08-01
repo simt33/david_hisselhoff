@@ -107,9 +107,19 @@ func BuildOccupiedCoords (state GameState) []Coord {
     dangerNoodleLength := int(dangerNoodles[i].Length)
     dangerNoodleBody := dangerNoodles[i].Body
 
+    // Every other snek's body
     for j := 0; j< dangerNoodleLength; j++ {
       occupiedCoords = append(occupiedCoords, dangerNoodleBody[j])
     }
+
+    // All moves around every other snek's head
+    if dangerNoodles[i].ID != state.You.ID {
+    	snekNextMoves := BuildPossibleMoves (dangerNoodles[i].Head, state)
+    
+    	for _, coord := range snekNextMoves {
+      	   occupiedCoords = append(occupiedCoords, coord)
+    }
+  } 
   }
   return occupiedCoords
 }
@@ -151,6 +161,7 @@ func CheckSafety (move string, testCoord Coord, state GameState, occupiedCoords 
   
   return true
 }
+
 
 func HungrySnek(preferredMoves map[string]Coord, state GameState, occupiedCoords []Coord) string {
   //Returns string value of possibleMove which minimises distance to closest food.
